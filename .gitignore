@@ -1,0 +1,29 @@
+# node_modules - dependencies, not stored in the repository
+node_modules/
+
+# jest cache
+coverage/
+.jest/
+
+# test results
+test-results/
+test-output/
+
+# temp files
+*.log
+*.tmp
+
+# IDE files
+.vscode/
+.idea/
+
+# Mac / Windows specific files
+.DS_Store
+Thumbs.db
+
+# Linux swap files
+*.swp
+*.swo
+
+# Environment files
+.env
