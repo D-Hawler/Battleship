@@ -1,4 +1,13 @@
-:root {}
+:root {
+    --main-color: rgb(255, 255, 255);
+    --second-main-color: rgb(228, 226, 226);
+    --ship-color: rgb(0, 0, 0);
+
+    --border-color: rgb(0, 0, 0);
+    --box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+
+    --cell-height-width: 30px;
+}
 
 * {
     padding: 0;
@@ -6,6 +15,90 @@
     box-sizing: border-box;
 }
 
-html, body {
+html, body, main {
     height: 100vh;
 }
+
+
+
+
+
+
+
+
+
+main > div:first-of-type {
+    height: 100%;
+    width: 100%;
+
+    display: flex;
+    gap: 60px;
+    justify-content: center;
+}
+.gameArea {
+    height: calc(var(--cell-height-width) * 11);
+    width: calc(var(--cell-height-width) * 11);
+
+    display: grid;
+    grid-template: 10% 90% / 10% 90%;
+
+    box-shadow: var(--box-shadow);
+}
+.gameArea :first-child {
+    height: var(--cell-height-width);
+    width: var(--cell-height-width);
+}
+
+.topPanel {
+    height: var(--cell-height-width);
+    width: calc(var(--cell-height-width) * 10);
+
+    text-align: center;
+    align-content: center;
+
+    display: grid;
+    grid-template-columns: repeat(10, var(--cell-height-width));
+}
+.topPanel > div, .sidePanel > div {
+    height: var(--cell-height-width);
+    width: var(--cell-height-width);
+
+    text-align: center;
+    align-content: center;
+}
+.sidePanel {
+    height: calc(var(--cell-height-width) * 10);
+    width: var(--cell-height-width);
+
+    text-align: center;
+    align-content: center;
+
+    display: grid;
+    grid-template-rows: repeat(10, var(--cell-height-width));
+}
+
+.bord {
+    height: calc(var(--cell-height-width) * 10);
+    width: calc(var(--cell-height-width) * 10);
+
+    background-color: var(--second-main-color);
+
+    display: grid;
+    grid-template: repeat(10, var(--cell-height-width)) / repeat(10, var(--cell-height-width));
+
+    border: 1px solid var(--border-color);
+}
+.bord > div {
+    border: 1px solid var(--border-color);
+}
+.bord > div:hover {
+    transform: scale(0.5);
+    border-radius: 50%;
+}
+.bord > div:active {
+    transform: scale(0.1);
+}
+
+[data-status='ship'] {
+    background-color: var(--ship-color);
+};
