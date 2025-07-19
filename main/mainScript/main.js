@@ -1,4 +1,4 @@
-import { shipDamageEvent } from './eventManager.js';
+import { shipDamageEvent, eventPlayers } from './eventManager.js';
 
 class Ship {
     constructor(length) {
@@ -149,9 +149,7 @@ class Player {
     };
 };
 
-
-
-function createPlayes(name, playerType) {
+function createPlayes({ name, type }) {
     const numberOfShip = [
         {quantity: 1, length: 4},
         {quantity: 2, length: 3},
@@ -159,7 +157,7 @@ function createPlayes(name, playerType) {
         {quantity: 4, length: 1},
     ];
 
-    const player = new Player(name, playerType);
+    const player = new Player(name, type);
     Player.addArr(player);
 
     numberOfShip.forEach((ship) => {
@@ -190,6 +188,8 @@ function createPlayes(name, playerType) {
             } catch (error) {};
         };
     });
+
+    console.log(player);
 };
 
 

@@ -20,15 +20,9 @@ html, body, main {
 }
 
 
-
-
-
-
-
-
-
+/* Styles for the play area and game board */
 main > div:first-of-type {
-    height: 100%;
+    height: calc(var(--cell-height-width) * 12);
     width: 100%;
 
     display: flex;
@@ -102,3 +96,44 @@ main > div:first-of-type {
 [data-status='ship'] {
     background-color: var(--ship-color);
 };
+
+
+
+
+
+
+/* Styles for the field with character creation and game controls */
+main > div:last-of-type {
+    padding: 10px 20px;
+    
+    /* background-color: var(--second-main-color);
+    border-top: 2px solid var(--border-color);
+    border-bottom: 2px solid var(--border-color); */
+
+    background-color: black;
+}
+
+
+
+
+
+
+
+
+
+
+
+input[type="radio"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #555;
+    border-radius: 3px;
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: middle;
+    cursor: pointer;
+  }
+input[type="radio"]:checked {
+    background-color: #4caf50;
+}

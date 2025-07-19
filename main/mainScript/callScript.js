@@ -1,7 +1,25 @@
+import { eventPlayers } from './eventManager.js';
+import { createPlayes } from './main.js';
+document.addEventListener('DOMContentLoaded', () => {
+    eventPlayers.subscribe('playerCreation', createPlayes);
+})
 
+document.querySelector('#create').addEventListener('click', (event) => {
+    event.preventDefault();
 
-document.addEventListener('click', () => {});
+    const form = document.querySelector('form');
 
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+    };
+
+    const name = form.querySelector('#name').value;
+    const type = form.querySelector('input[name="choice"]:checked').value;
+
+    eventPlayers.publish('playerCreation', {name, type});
+    form.remove();
+});
 
 
 

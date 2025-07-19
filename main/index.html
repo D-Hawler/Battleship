@@ -69,8 +69,25 @@
                 <div class="bord"></div>
             </div>
         </div>
-        <div class="controlPanel">
-            <button>create player</button>
+        <div>
+            <form>
+                <div>
+                    <label for="name">Name player:</label><br>
+                    <input id="name" type="text" minlength="4" maxlength="20" required>
+                </div>
+                <div>
+                    <p>Player type:</p>
+                    <label>
+                        Human:
+                        <input type="radio" name="choice" value="human" checked>
+                    </label>
+                    <label>
+                        Computer:
+                        <input id="type" type="radio" name="choice" value="comp">
+                    </label>
+                </div>
+                <button id="create">create player</button>
+            </form>
         </div>
     </main>
 </body>
