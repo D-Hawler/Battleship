@@ -1,8 +1,16 @@
-import { eventPlayers } from './eventManager.js';
-import { createPlayes } from './main.js';
+import { eventPlayers, round } from './eventManager.js';
+import { createPlayes, getAttackResult } from './main.js';
+import { placingOnBoard } from './createDOM.js';
 document.addEventListener('DOMContentLoaded', () => {
-    eventPlayers.subscribe('playerCreation', createPlayes);
-})
+    eventPlayers.subscribe('playerCreationAttempt', createPlayes);
+    eventPlayers.subscribe('playerCreated', placingOnBoard);
+
+    eventPlayers.subscribe('attemptToCreatePlayerComputer', createPlayes);
+
+
+
+    eventPlayers.publish('attemptToCreatePlayerComputer', { name: 'comp', type: 'comp' });
+});
 
 document.querySelector('#create').addEventListener('click', (event) => {
     event.preventDefault();
@@ -17,39 +25,32 @@ document.querySelector('#create').addEventListener('click', (event) => {
     const name = form.querySelector('#name').value;
     const type = form.querySelector('input[name="choice"]:checked').value;
 
-    eventPlayers.publish('playerCreation', {name, type});
+    eventPlayers.publish('playerCreationAttempt', { name, type });
     form.remove();
 });
 
+document.querySelectorAll('.gameArea .bord')[1].addEventListener('click', (event) => {
+    const cell = event.target.closest('[data-status]');
 
+    if (!cell) return;
+    if (cell.dataset.status === 'miss' || cell.dataset.status === 'hit') return;
 
+    const row = Number(cell.dataset.row);
+    const col = Number(cell.dataset.col);
 
-
-
-
-
-
-
-
-(function () {
-    const bord = document.querySelectorAll('.bord');
-
-    const cord = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-    bord.forEach((bord) => {
-        cord.forEach((row) => {
-        let col = 0;
-        
-        for (let i = 0; i < 10; i ++) {
-                const cell = document.createElement('div')
-                cell.dataset.row = row;
-                cell.dataset.col = col;
-                cell.dataset.status = 'empty';
-
-                col += 1;
-
-                bord.appendChild(cell);
-            };
-        });
-    });
-})();
+    if (getAttackResult(row, col)) {
+        cell.dataset.status = 'hit';
+        cell.innerHTML = '&times;';
+            
+        round.publish('hit');
+        return;
+    };
+    
+    if (cell.dataset.status === 'empty') {
+        cell.dataset.status = 'miss';
+        cell.innerHTML = '&times;';
+    
+        round.publish('miss');
+        return;
+    };
+});

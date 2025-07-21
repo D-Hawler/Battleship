@@ -20,10 +20,26 @@ html, body, main {
 }
 
 
+
+
+
+
+
+header {
+    height: 100px;
+
+    background-color: var(--second-main-color);
+    border-bottom: 2px solid var(--border-color);
+}
+
+
 /* Styles for the play area and game board */
 main > div:first-of-type {
-    height: calc(var(--cell-height-width) * 12);
+    height: calc((100 + 100) + calc(var(--cell-height-width) * 13));
     width: 100%;
+
+    padding-top: 100px;
+    padding-bottom: 100px;
 
     display: flex;
     gap: 60px;
@@ -38,7 +54,7 @@ main > div:first-of-type {
 
     box-shadow: var(--box-shadow);
 }
-.gameArea :first-child {
+.gameArea > :first-child {
     height: var(--cell-height-width);
     width: var(--cell-height-width);
 }
@@ -83,21 +99,41 @@ main > div:first-of-type {
     border: 1px solid var(--border-color);
 }
 .bord > div {
+    height: var(--cell-height-width);
+    width: var(--cell-height-width);
+
+    font-size: 1.5rem;
+    font-weight: 900;
+    text-align: center;
+    align-content: center;
+    
     border: 1px solid var(--border-color);
 }
-.bord > div:hover {
+
+.bord > div > div {
+    height: var(--cell-height-width);
+    width: var(--cell-height-width);
+}
+.bord > div > div:hover {
     transform: scale(0.5);
+
+    border: 1px solid var(--border-color);
     border-radius: 50%;
 }
-.bord > div:active {
+.bord > div > div:active {
     transform: scale(0.1);
 }
 
-[data-status='ship'] {
+/* Ship's cell designs */
+[data-status='ship'] > div {
     background-color: var(--ship-color);
-};
+}
 
 
+
+[data-status='hit'] {
+    color: red; /* fix it, later */
+}
 
 
 
@@ -106,11 +142,9 @@ main > div:first-of-type {
 main > div:last-of-type {
     padding: 10px 20px;
     
-    /* background-color: var(--second-main-color);
+    background-color: var(--second-main-color);
     border-top: 2px solid var(--border-color);
-    border-bottom: 2px solid var(--border-color); */
-
-    background-color: black;
+    border-bottom: 2px solid var(--border-color);
 }
 
 
