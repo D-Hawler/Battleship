@@ -1,3 +1,5 @@
+import { Player } from './constructors.js';
+
 (function () {
     const bord = [...document.querySelectorAll('.bord')];
 
@@ -24,12 +26,23 @@
 })();
 
 function placingOnBoard({ player: { ship } }) {
-    const bord = document.querySelector('.gameArea');
+    const bord = document.querySelector('.gameArea .bord');
 
     ship.forEach((cell) => {
         cell.location.forEach((cord) => {
            const cell = bord.querySelector(`[data-row="${cord[0]}"][data-col="${cord[1]}"]`);
            cell.dataset.status = 'ship';
+        });
+    });
+
+    const plaeyrBord = Player.playersArr.find((obj) => obj.playerType === 'human').board.board;
+    plaeyrBord.forEach((row, rowIndex) => {
+        row.forEach((col, colIndex) => {
+            if (col === 'block') {
+                const cell = bord.querySelector(`[data-row="${rowIndex}"][data-col="${colIndex}"]`);
+
+                cell.innerHTML = '&#9679;';
+            };
         });
     });
 };

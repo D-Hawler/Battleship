@@ -1,5 +1,5 @@
 import { Player, Gameboard, Ship } from './constructors.js';
-import { eventPlayers } from './eventManager.js';
+import { eventPlayers, round, turnState } from './eventManager.js';
 
 function createPlayes({ name, type }) {
     const numberOfShip = [
@@ -41,14 +41,33 @@ function createPlayes({ name, type }) {
         };
     });
 
+    // console.log(player);
     if (player.playerType === 'human') { // fix it, later
-        console.log(player);
+        turnState.isPlayerTurn = true;
         eventPlayers.publish('playerCreated', { player });
     };
 };
 
+
+
+
+
+
+
+
+function hitCheck(cell, [row, col]) {
+    if (!cell) throw Error('The variable “cell” was not found.');
+    if (cell.dataset.status === 'miss' || cell.dataset.status === 'hit') return;
+
+    if (getAttackResult(row, col)) return true;
+    
+    if (cell.dataset.status === 'empty') return false;
+};
+
 function getAttackResult(row, col) {
-    const opponentBoard = Player.playersArr.find((elm) => elm.playerType === 'comp').ship;
+    const opponentBoard = Player.playersArr.find(
+        (elm) => elm.playerType === (turnState.isPlayerTurn ? 'comp' : 'human')
+    ).ship;
 
     return opponentBoard.some((ship) =>
         ship.location.some(ship => ship[0] === row && ship[1] === col)
@@ -56,4 +75,174 @@ function getAttackResult(row, col) {
 };
 
 
-export { createPlayes, getAttackResult };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function computerMove() {
+    const row = Math.floor(Math.random() * Gameboard.SIZE);
+    const col = Math.floor(Math.random() * Gameboard.SIZE);
+
+    const bord = document.querySelectorAll('.gameArea .bord')[0];
+    const cell = bord.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+
+    switch (hitCheck(cell, [row, col])) {
+        case (true):
+            cell.dataset.status = 'hit';
+            cell.innerHTML = '&times;';
+
+            round.publish('hit', { row, col });
+
+            setTimeout(() => {
+                computerMoveSearch([row, col]);
+            }, 1500);
+        break;
+
+        case (false):
+            cell.dataset.status = 'miss';
+            cell.innerHTML = '&times;';
+
+            turnState.isPlayerTurn = true;
+        break;
+
+        case (undefined):
+            computerMove();
+        break;
+
+        default:
+            console.warn(`Something went wrong with the computer's move`);
+        break;
+    };
+};
+
+function computerMoveSearch([row, col]) {
+    let emptyCell;
+    let hit = false;
+    let notFoundCounter = 0;
+
+    for (let value of Gameboard.prohibitionOfApproach) {
+        const x = value[0] + row;
+        const y = value[1] + col;
+
+        const bord = document.querySelectorAll('.gameArea .bord')[0];
+        const cell = bord.querySelector(`[data-row="${x}"][data-col="${y}"]`);
+        
+        try {
+            const result = hitCheck(cell, [x, y]);
+    
+            if (result === true) {
+                cell.dataset.status = 'hit';
+                cell.innerHTML = '&times;';
+                hit = true;
+
+                round.publish('hit', { row, col });
+        
+                setTimeout(() => {
+                    computerMoveSearch([x, y]);
+                }, 1500);
+                break;
+            } else if (result === false) {
+                emptyCell = [x, y];
+                continue;
+            } else {
+                notFoundCounter += 1;
+                continue;
+            };
+        } catch (error) {
+            notFoundCounter += 1;
+            continue;
+        };
+    };
+
+    if (notFoundCounter === 8) {
+       computerMove();
+       return;
+    };
+
+    if (emptyCell && !hit) {
+        const bord = document.querySelectorAll('.gameArea .bord')[0];
+        const cell = bord.querySelector(`[data-row="${emptyCell[0]}"][data-col="${emptyCell[1]}"]`);
+
+        cell.dataset.status = 'miss';
+        cell.innerHTML = '&times;';
+
+        turnState.isPlayerTurn = true;
+        return;
+    };
+
+    if (notFoundCounter !== 8 && !emptyCell && !hit) throw Error('Something went wrong in the “computerMoveSearch” function.');
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function hitShipCheck({ row, col }) {
+    const opponent = Player.playersArr.find(
+        (elm) => elm.playerType === (turnState.isPlayerTurn ? 'comp' : 'human')
+    );
+    
+    const ship = opponent.ship.find((arr) => arr.location.some((cord) => cord[0] === row && cord[1] === col));
+
+    if (ship) {
+        ship.hit();
+        ship.isSunk();
+
+        if (ship.sunk) {
+            round.publish('sunk', { opponent, ship });
+        };
+    };
+};
+
+function sunk({ opponent, ship }) {
+    if (ship.sunk === false) throw Error('Something went wrong in the "sunk" function.');
+
+    const bordIndex = (opponent.playerType === 'human') ? 0 : 1;
+    const bord = document.querySelectorAll('.gameArea .bord')[bordIndex];
+
+    ship.location.forEach((elm) => {
+        Gameboard.prohibitionOfApproach.forEach((cord) => {
+            const row = elm[0] + cord[0];
+            const col = elm[1] + cord[1];
+
+            if (Gameboard.permissibleMove([row, col])) {
+                const cell = bord.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+                if (cell.dataset.status === 'empty') {
+                    cell.dataset.status = 'miss';
+                    cell.innerHTML = '&times;';
+                };
+            };
+        });
+    });
+};
+
+
+
+
+
+
+
+
+
+export { createPlayes, getAttackResult, hitShipCheck, hitCheck, sunk, computerMove, computerMoveSearch };

@@ -1,4 +1,4 @@
-import { shipDamageEvent, eventPlayers } from './eventManager.js';
+import { shipDamageEvent, eventPlayers, round } from './eventManager.js';
 
 class Ship {
     constructor(length) {
@@ -13,7 +13,6 @@ class Ship {
 
     hit() {
         this.hitting += 1;
-        shipDamageEvent.publish('SHIP_HIT');
     };
 
     isSunk() {

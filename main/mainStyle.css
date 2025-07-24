@@ -121,7 +121,7 @@ main > div:first-of-type {
     border-radius: 50%;
 }
 .bord > div > div:active {
-    transform: scale(0.1);
+    transform: scale(0.35);
 }
 
 /* Ship's cell designs */
@@ -129,9 +129,12 @@ main > div:first-of-type {
     background-color: var(--ship-color);
 }
 
+.bord > div[data-status='empty'] {
+    font-size: 1rem;
+}
 
 
-[data-status='hit'] {
+.bord > div[data-status='hit'] {
     color: red; /* fix it, later */
 }
 

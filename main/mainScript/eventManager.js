@@ -14,7 +14,11 @@ class EventBus {
   }
 }
 
+const turnState = {
+    isPlayerTurn: false,
+};
+
 const shipDamageEvent = new EventBus();
 const eventPlayers = new EventBus();
 const round = new EventBus();
-export { shipDamageEvent, eventPlayers, round };
+export { shipDamageEvent, eventPlayers, round, turnState };

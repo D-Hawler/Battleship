@@ -1,9 +1,12 @@
-import { createPlayes, Player, Gameboard } from '../main/mainScript/main.js';
+import { Player, Gameboard } from '../main/mainScript/constructors.js';
+import { createPlayes } from '../main/mainScript/main.js';
+
+let bord;
 
 describe('Gameboard.shipPlacement', () => {
     beforeEach(() => {
         // Reset the playing field before each test
-        bord = new Gameboard()
+        bord = new Gameboard();
     });
 
     it('places the vertical ship correctly', () => {
@@ -100,7 +103,7 @@ describe('Gameboard.shipPlacement', () => {
 
 describe('createPlayes function', () => {
   test('creates a player with the correct number of ships', () => {
-    createPlayes('Alice', 'human');
+    createPlayes({ name: 'Alice', type: 'human' });
     const player = Player.playersArr.find(p => p.name === 'Alice');
 
     expect(player).toBeDefined();
@@ -109,7 +112,7 @@ describe('createPlayes function', () => {
   });
 
   test('all ships have coordinates after placement', () => {
-    createPlayes('Bob', 'human');
+    createPlayes({ name: 'Bob', type: 'human' });
     const player = Player.playersArr.find(p => p.name === 'Bob');
 
     player.ship.forEach(ship => {

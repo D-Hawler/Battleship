@@ -15,3 +15,10 @@ babel.config.js
 module.exports = {
   presets: [['@babel/preset-env', {targets: {node: 'current'}}]],
 };
+
+
+npm install --save-dev jest-environment-jsdom
+
+"jest": {
+  "testEnvironment": "jsdom"
+}
