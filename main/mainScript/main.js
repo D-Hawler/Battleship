@@ -1,6 +1,7 @@
 import { Player, Gameboard, Ship } from './constructors.js';
 import { eventPlayers, round, turnState } from './eventManager.js';
 
+// Creates a player object and fills it with ships
 function createPlayes({ name, type }) {
     const numberOfShip = [
         {quantity: 1, length: 4},
@@ -49,12 +50,7 @@ function createPlayes({ name, type }) {
 };
 
 
-
-
-
-
-
-
+// returns the result of the player's attack
 function hitCheck(cell, [row, col]) {
     if (!cell) throw Error('The variable “cell” was not found.');
     if (cell.dataset.status === 'miss' || cell.dataset.status === 'hit') return;
@@ -64,6 +60,7 @@ function hitCheck(cell, [row, col]) {
     if (cell.dataset.status === 'empty') return false;
 };
 
+// checks if there is a ship in the attacked cell
 function getAttackResult(row, col) {
     const opponentBoard = Player.playersArr.find(
         (elm) => elm.playerType === (turnState.isPlayerTurn ? 'comp' : 'human')
@@ -75,22 +72,10 @@ function getAttackResult(row, col) {
 };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// identifies a possible cell to the computer attack
 function computerMove() {
+    if (turnState.isgameOver) return;
+    
     const row = Math.floor(Math.random() * Gameboard.SIZE);
     const col = Math.floor(Math.random() * Gameboard.SIZE);
 
@@ -126,7 +111,10 @@ function computerMove() {
     };
 };
 
+// searches for a cell to attack after hitting an enemy ship
 function computerMoveSearch([row, col]) {
+    if (turnState.isgameOver) return;
+
     let emptyCell;
     let hit = false;
     let notFoundCounter = 0;
@@ -185,19 +173,7 @@ function computerMoveSearch([row, col]) {
 };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+// initializes hits and flood checks
 function hitShipCheck({ row, col }) {
     const opponent = Player.playersArr.find(
         (elm) => elm.playerType === (turnState.isPlayerTurn ? 'comp' : 'human')
@@ -215,6 +191,7 @@ function hitShipCheck({ row, col }) {
     };
 };
 
+// blocks the cells around the sunken ship
 function sunk({ opponent, ship }) {
     if (ship.sunk === false) throw Error('Something went wrong in the "sunk" function.');
 
@@ -238,11 +215,14 @@ function sunk({ opponent, ship }) {
 };
 
 
+// determines if the game is over
+function endgameCheck({ opponent }) {
+    if (opponent.ship.every((elm) => elm.sunk === true)) {
+        turnState.isgameOver = true;
+
+        console.log(`Game Over: ${opponent} lose.`)
+    };
+};
 
 
-
-
-
-
-
-export { createPlayes, getAttackResult, hitShipCheck, hitCheck, sunk, computerMove, computerMoveSearch };
+export { createPlayes, getAttackResult, hitShipCheck, hitCheck, sunk, computerMove, computerMoveSearch, endgameCheck };

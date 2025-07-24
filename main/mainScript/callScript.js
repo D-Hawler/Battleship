@@ -1,31 +1,5 @@
 import { eventPlayers, round, turnState } from './eventManager.js';
-import { createPlayes, hitShipCheck, hitCheck, sunk, computerMove } from './main.js';
-import { placingOnBoard } from './createDOM.js';
-document.addEventListener('DOMContentLoaded', () => {
-    eventPlayers.subscribe('playerCreationAttempt', createPlayes);
-
-    eventPlayers.subscribe('playerCreated', placingOnBoard);
-
-    eventPlayers.subscribe('attemptToCreatePlayerComputer', createPlayes);
-
-    round.subscribe('tap', hitCheck);
-
-    round.subscribe('hit', hitShipCheck);
-
-    round.subscribe('miss', () => {
-        turnState.isPlayerTurn = false;
-
-        setTimeout(() => {
-            computerMove();
-        }, 1500);
-    });
-
-    round.subscribe('sunk', sunk);
-
-
-
-    eventPlayers.publish('attemptToCreatePlayerComputer', { name: 'comp', type: 'comp' });
-});
+import { hitCheck } from './main.js';
 
 // event handler for player creation
 document.querySelector('#create').addEventListener('click', (event) => {
@@ -47,26 +21,29 @@ document.querySelector('#create').addEventListener('click', (event) => {
 
 // event handler for clicking on a board cell during a player's turn
 document.querySelectorAll('.gameArea .bord')[1].addEventListener('click', (event) => {
+    if (turnState.isgameOver) return;
     if (!turnState.isPlayerTurn) return;
 
     const cell = event.target.closest('[data-status]');
 
-    const row = Number(cell.dataset.row);
-    const col = Number(cell.dataset.col);
+    if (cell) {
+        const row = Number(cell.dataset.row);
+        const col = Number(cell.dataset.col);
 
-    switch (hitCheck(cell, [row, col])) {
-        case (true):
-            cell.dataset.status = 'hit';
-            cell.innerHTML = '&times;';
+        switch (hitCheck(cell, [row, col])) {
+            case (true):
+                cell.dataset.status = 'hit';
+                cell.innerHTML = '&times;';
 
-            round.publish('hit', { row, col });
-        break;
+                round.publish('hit', { row, col });
+            break;
 
-        case (false):
-            cell.dataset.status = 'miss';
-            cell.innerHTML = '&times;';
+            case (false):
+                cell.dataset.status = 'miss';
+                cell.innerHTML = '&times;';
 
-            round.publish('miss');
-        break;
+                round.publish('miss');
+            break;
+        };
     };
 });
