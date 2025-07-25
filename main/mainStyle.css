@@ -1,8 +1,9 @@
 :root {
     --main-color: rgb(255, 255, 255);
     --second-main-color: rgb(228, 226, 226);
-    --ship-color: rgb(0, 0, 0);
+    --ship-color: rgba(0, 0, 0, 50%);
 
+    --light-border-color: rgb(92, 92, 92);
     --border-color: rgb(0, 0, 0);
     --box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 
@@ -17,25 +18,33 @@
 
 html, body, main {
     height: 100vh;
+
+    overflow: hidden;
 }
 
 
-
-
-
-
-
+/* Styles for the header of the site */
 header {
     height: 100px;
+
+    padding: 10px 20px;
 
     background-color: var(--second-main-color);
     border-bottom: 2px solid var(--border-color);
 }
 
+header > div {
+    width: max-content;
+
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
 
 /* Styles for the play area and game board */
 main > div:first-of-type {
-    height: calc((100 + 100) + calc(var(--cell-height-width) * 13));
+    height: 600px;
     width: 100%;
 
     padding-top: 100px;
@@ -109,6 +118,9 @@ main > div:first-of-type {
     
     border: 1px solid var(--border-color);
 }
+.bord > div:hover {
+    cursor: pointer;
+}
 
 .bord > div > div {
     height: var(--cell-height-width);
@@ -124,18 +136,49 @@ main > div:first-of-type {
     transform: scale(0.35);
 }
 
+h2 {
+    padding: 5px 0;
+    margin: 20px 0 0 40px;
+
+    text-align: center;
+
+    border: 1px solid var(--border-color);
+}
+
+.currentPlayer {
+    background-color: rgba(42, 180, 53, 0.5);
+}
+
+.activeBoard {
+  filter: none;
+  opacity: 1;
+  transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+.inactiveBoard {
+  filter: grayscale(0.5);
+  opacity: 0.6;
+}
+
+.bord .lastMove {
+  background-color: rgba(255, 0, 0, 50%) !important;
+  outline: 2px solid rgb(255, 0, 0);
+}
+
+
 /* Ship's cell designs */
 [data-status='ship'] > div {
     background-color: var(--ship-color);
 }
 
 .bord > div[data-status='empty'] {
-    font-size: 1rem;
+    font-size: 0.6rem;
 }
 
 
 .bord > div[data-status='hit'] {
     color: red; /* fix it, later */
+    background-color: var(--ship-color);
 }
 
 
@@ -143,12 +186,88 @@ main > div:first-of-type {
 
 /* Styles for the field with character creation and game controls */
 main > div:last-of-type {
+    height: 100%;
     padding: 10px 20px;
     
     background-color: var(--second-main-color);
     border-top: 2px solid var(--border-color);
-    border-bottom: 2px solid var(--border-color);
 }
+
+
+
+
+
+
+
+
+form {
+    display: inline-flex;
+    gap: 10px;
+    flex-direction: column;
+}
+
+label[for="name"]{
+    margin-bottom: 5px;
+
+    display: block;
+}
+
+#name {
+    width: 100%;
+    padding: 5px 10px;
+
+    border: 1px solid var(--light-border-color);
+    border-radius: 10px;
+    box-shadow: var(--box-shadow);
+}
+#name:hover {
+    transform: scale(0.98);
+
+    border-color:var(--border-color);
+}
+#name:active {
+    transform: scale(0.98);
+}
+
+form > div:nth-of-type(2) {
+    padding: 5px 10px;
+
+    background-color: var(--main-color);
+    
+    border: 1px solid var(--light-border-color);
+    border-radius: 10px;
+    box-shadow: var(--box-shadow);
+}
+form > div:nth-of-type(2):hover {
+    border-color:var(--border-color);
+}
+
+form > div:nth-of-type(2) > p {
+    margin-bottom: 10px;
+}
+
+form > button {
+    padding: 5px 10px;
+
+    font-weight: 900;
+
+    border: 1px solid var(--light-border-color);
+    border-radius: 10px;
+    box-shadow: var(--box-shadow);
+}
+form > button:hover {
+    transform: scale(0.98);
+
+    border-color:var(--border-color);
+
+    cursor: pointer;
+}
+form > button:active {
+    transform: scale(0.9);
+}
+
+
+
 
 
 
@@ -161,16 +280,41 @@ main > div:last-of-type {
 
 
 input[type="radio"] {
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border: 2px solid #555;
-    border-radius: 3px;
-    display: inline-block;
-    margin-right: 10px;
-    vertical-align: middle;
-    cursor: pointer;
-  }
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #555;
+  border-radius: 3px;
+  display: inline-block;
+  margin-right: 10px;
+  vertical-align: middle;
+  cursor: pointer;
+  position: relative;
+}
+
 input[type="radio"]:checked {
-    background-color: #4caf50;
+  background-color: #4caf50;
+}
+
+input[type="radio"]:disabled {
+  border-color: #aaa;
+  background-color: #eee;
+  cursor: not-allowed;
+}
+
+input[type="radio"]:disabled::before,
+input[type="radio"]:disabled::after {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 2px;
+  background-color: red;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  pointer-events: none;
+}
+
+input[type="radio"]:disabled::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
 }

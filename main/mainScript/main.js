@@ -44,7 +44,7 @@ function createPlayes({ name, type }) {
 
     // console.log(player);
     if (player.playerType === 'human') { // fix it, later
-        turnState.isPlayerTurn = true;
+        turnState.isGameStart = true;
         eventPlayers.publish('playerCreated', { player });
     };
 };
@@ -86,6 +86,7 @@ function computerMove() {
         case (true):
             cell.dataset.status = 'hit';
             cell.innerHTML = '&times;';
+            cell.classList.add('lastMove');
 
             round.publish('hit', { row, col });
 
@@ -97,6 +98,7 @@ function computerMove() {
         case (false):
             cell.dataset.status = 'miss';
             cell.innerHTML = '&times;';
+            cell.classList.add('lastMove');
 
             turnState.isPlayerTurn = true;
         break;
@@ -132,6 +134,7 @@ function computerMoveSearch([row, col]) {
             if (result === true) {
                 cell.dataset.status = 'hit';
                 cell.innerHTML = '&times;';
+                cell.classList.add('lastMove');
                 hit = true;
 
                 round.publish('hit', { row, col });
@@ -164,6 +167,7 @@ function computerMoveSearch([row, col]) {
 
         cell.dataset.status = 'miss';
         cell.innerHTML = '&times;';
+        cell.classList.add('lastMove');
 
         turnState.isPlayerTurn = true;
         return;
@@ -220,7 +224,7 @@ function endgameCheck({ opponent }) {
     if (opponent.ship.every((elm) => elm.sunk === true)) {
         turnState.isgameOver = true;
 
-        console.log(`Game Over: ${opponent} lose.`)
+        console.log(`Game Over: ${opponent} lose.`);
     };
 };
 

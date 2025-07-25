@@ -47,4 +47,35 @@ function placingOnBoard({ player: { ship } }) {
     });
 };
 
-export { placingOnBoard };
+
+
+function signs() {
+    const area = document.querySelectorAll('main > div > div');
+
+    const namePlayer = Player.playersArr.find((elm) => elm.playerType === 'human');
+
+    const playerSign = document.createElement('h2');
+    playerSign.textContent = namePlayer.name;
+
+    area[0].appendChild(playerSign);
+
+
+    const nameComp = Player.playersArr.find((elm) => elm.playerType === 'comp');
+
+    const compSign = document.createElement('h2');
+    compSign.textContent = nameComp.name;
+
+    area[1].appendChild(compSign);
+};
+
+
+
+
+
+
+
+
+
+
+
+export { placingOnBoard, signs };

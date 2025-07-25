@@ -4,76 +4,86 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./mainStyle.css">
+    <link rel="icon" href="./icon/favicon .png" type="image/x-icon">
     <script src="./mainScript/callScript.js" type="module"></script>
     <title>Battleship</title>
 </head>
 <body>
     <main>
-        <header></header>
+        <header>
+            <div>
+                <img alt="LOGO" src="./icon/favicon .png">
+                <h1>BATTLESHIP</h1>
+            </div>
+        </header>
         <div>
-            <div class="gameArea">
-                <div></div>
-                <div class="topPanel">
-                    <div>A</div>
-                    <div>B</div>
-                    <div>C</div>
-                    <div>D</div>
-                    <div>E</div>
-                    <div>F</div>
-                    <div>G</div>
-                    <div>H</div>
-                    <div>I</div>
-                    <div>J</div>
+            <div>
+                <div class="gameArea">
+                    <div></div>
+                    <div class="topPanel">
+                        <div>A</div>
+                        <div>B</div>
+                        <div>C</div>
+                        <div>D</div>
+                        <div>E</div>
+                        <div>F</div>
+                        <div>G</div>
+                        <div>H</div>
+                        <div>I</div>
+                        <div>J</div>
+                    </div>
+                    <div class="sidePanel">
+                        <div>1</div>
+                        <div>2</div>
+                        <div>3</div>
+                        <div>4</div>
+                        <div>5</div>
+                        <div>6</div>
+                        <div>7</div>
+                        <div>8</div>
+                        <div>9</div>
+                        <div>10</div>
+                    </div>
+                    <div class="bord"></div>
                 </div>
-                <div class="sidePanel">
-                    <div>1</div>
-                    <div>2</div>
-                    <div>3</div>
-                    <div>4</div>
-                    <div>5</div>
-                    <div>6</div>
-                    <div>7</div>
-                    <div>8</div>
-                    <div>9</div>
-                    <div>10</div>
-                </div>
-                <div class="bord"></div>
             </div>
 
-            <div class="gameArea">
-                <div></div>
-                <div class="topPanel">
-                    <div>A</div>
-                    <div>B</div>
-                    <div>C</div>
-                    <div>D</div>
-                    <div>E</div>
-                    <div>F</div>
-                    <div>G</div>
-                    <div>H</div>
-                    <div>I</div>
-                    <div>J</div>
+            <div>
+                <div class="gameArea">
+                    <div></div>
+                    <div class="topPanel">
+                        <div>A</div>
+                        <div>B</div>
+                        <div>C</div>
+                        <div>D</div>
+                        <div>E</div>
+                        <div>F</div>
+                        <div>G</div>
+                        <div>H</div>
+                        <div>I</div>
+                        <div>J</div>
+                    </div>
+                    <div class="sidePanel">
+                        <div>1</div>
+                        <div>2</div>
+                        <div>3</div>
+                        <div>4</div>
+                        <div>5</div>
+                        <div>6</div>
+                        <div>7</div>
+                        <div>8</div>
+                        <div>9</div>
+                        <div>10</div>
+                    </div>
+                    <div class="bord"></div>
                 </div>
-                <div class="sidePanel">
-                    <div>1</div>
-                    <div>2</div>
-                    <div>3</div>
-                    <div>4</div>
-                    <div>5</div>
-                    <div>6</div>
-                    <div>7</div>
-                    <div>8</div>
-                    <div>9</div>
-                    <div>10</div>
-                </div>
-                <div class="bord"></div>
             </div>
         </div>
         <div>
             <form>
                 <div>
-                    <label for="name">Name player:</label><br>
-                    <input id="name" type="text" minlength="4" maxlength="20" required>
+                    <label for="name">Name player:</label>
+                    <input id="name" type="text" minlength="4" maxlength="10" required>
                 </div>
                 <div>
                     <p>Player type:</p>
@@ -86,7 +96,7 @@
                         <input id="type" type="radio" name="choice" value="comp" disabled>
                     </label>
                 </div>
-                <button id="create">create player</button>
+                <button id="create">Create player</button>
             </form>
         </div>
     </main>
